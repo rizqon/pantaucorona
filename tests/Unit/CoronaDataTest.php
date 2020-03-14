@@ -64,7 +64,6 @@ class CoronaDataTest extends TestCase
 
         $sub = Kasus::selectRaw('MAX(created_at)');
 
-        
         $data = Kasus::whereRaw("created_at IN ({$sub->toSql()} GROUP BY Date(created_at) )")->orderBy('created_at', 'desc');
 
         dd($data->get()->groupBy(function($item){
