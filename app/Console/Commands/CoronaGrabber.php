@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Kasus;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use App\Events\CaseUpdated;
 use Illuminate\Console\Command;
 use KubAT\PhpSimple\HtmlDomParser;
 
@@ -45,8 +46,11 @@ class CoronaGrabber extends Command
         
         $data = $this->getData();
         
-        $kasus = Kasus::create($data);
+        $data['total_case'] = 100;
+        $data['total_recovered'] = 9;
+        $old_kasus = Kasus::latest()->first();
 
+        $kasus = Kasus::create($data);
         $this->info('Info virus corona');
         $this->line('Total Kasus: '. $kasus->total_case);
         $this->line('Kasus Baru: '. $kasus->new_case);
@@ -55,6 +59,8 @@ class CoronaGrabber extends Command
         $this->line('Total Sembuh: '. $kasus->total_recovered);
         $this->line('Kasus Aktif: '. $kasus->active_case);
         $this->line('Kasus Kritis: '. $kasus->critical_case);
+
+        event(new CaseUpdated($old_kasus, $kasus));
     }
 
     protected function getData() : array
