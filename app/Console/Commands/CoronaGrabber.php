@@ -46,8 +46,6 @@ class CoronaGrabber extends Command
         
         $data = $this->getData();
         
-        $data['total_case'] = 100;
-        $data['total_recovered'] = 9;
         $old_kasus = Kasus::latest()->first();
 
         $kasus = Kasus::create($data);
