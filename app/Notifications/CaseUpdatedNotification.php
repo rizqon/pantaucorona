@@ -39,7 +39,7 @@ class CaseUpdatedNotification extends Notification
     {
         return TelegramMessage::create()
             ->to('@pantaucorona')
-            ->content("Alert!\n".$this->message)
+            ->content("New Case Updated!\n".$this->message)
             ->button('More Info', 'https://pantaucorona.xyz');
     }
 }
