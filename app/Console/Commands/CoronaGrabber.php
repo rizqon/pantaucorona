@@ -93,7 +93,7 @@ class CoronaGrabber extends Command
 
     protected function getHtml() : string
     {
-        $url = 'https://www.worldometers.info/coronavirus/';
+        $url = config('corona.source_url');
         
         $client = new Client([
             // You can set any number of default request options.

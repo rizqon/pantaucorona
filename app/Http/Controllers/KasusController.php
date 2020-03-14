@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Kasus;
+use GuzzleHttp\Client;
 use App\Charts\LineChart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class KasusController extends Controller
 {
@@ -13,6 +15,34 @@ class KasusController extends Controller
         // Pick Data
         $kasus = Kasus::latest()->first();
 
+        $news = $this->news();
+
+        $chart = $this->lineChart();
+
+        $donat = $this->donatChart($kasus);
+
+        return view('dashboard', compact('kasus', 'chart', 'donat', 'news'));
+    }
+
+    protected function news()
+    {
+        $collection = Cache::remember('news-api', 3600, function () {
+            $client = new Client();
+
+            $response = $client->request('GET', config('corona.news_url'));
+
+            $data = json_decode($response->getBody()->getContents());
+
+            return collect($data->articles);
+        });
+
+        $collection = $collection->take(5);
+
+        return $collection->all();
+    }
+
+    protected function lineChart()
+    {
         // chart
         $sub = Kasus::selectRaw('MAX(created_at)');
         $data = Kasus::whereRaw("created_at IN ({$sub->toSql()} GROUP BY Date(created_at) )")
@@ -56,8 +86,13 @@ class KasusController extends Controller
                 ->color("#dc3545")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
 
+        return $chart;
+    }
+
+    protected function donatChart($kasus)
+    {
         $donat = new LineChart;
-        $chart->options([
+        $donat->options([
             'tooltip' => [
                 'show' => true // or false, depending on what you want.
             ]
@@ -83,6 +118,6 @@ class KasusController extends Controller
             '#17a2b8'
         ]);
 
-        return view('dashboard', compact('kasus', 'chart', 'donat'));
+        return $donat;
     }
 }
