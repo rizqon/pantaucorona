@@ -15,13 +15,13 @@ class KasusController extends Controller
         // Pick Data
         $kasus = Kasus::latest()->first();
 
-        $news = $this->news();
+        // $news = $this->news();
 
         $chart = $this->lineChart();
 
         $donat = $this->donatChart($kasus);
 
-        return view('dashboard', compact('kasus', 'chart', 'donat', 'news'));
+        return view('dashboard', compact('kasus', 'chart', 'donat'));
     }
 
     protected function news()
@@ -77,10 +77,10 @@ class KasusController extends Controller
         ]);
         $chart->labels($data->keys());
         $chart->dataset('Jumlah Kasus', 'line', $total_case)
-                ->color("#605ca8")
+                ->color("#17a2b8")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
         $chart->dataset('Kasus Aktive', 'line', $active_case)
-                ->color("#17a2b8")
+                ->color("#605ca8")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
         $chart->dataset('Pasien Sembuh ', 'line', $total_recovered)
                 ->color("#28a745")
