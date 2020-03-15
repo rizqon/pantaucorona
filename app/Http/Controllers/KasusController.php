@@ -55,6 +55,9 @@ class KasusController extends Controller
         $total_case = $data->values()->map(function($item, $key){
                             return $item[0]->total_case;
                         });
+        $active_case = $data->values()->map(function($item, $key){
+                            return $item[0]->active_case;
+                        });
         $total_recovered = $data->values()->map(function($item, $key){
                                 return $item[0]->total_recovered;
                             });
@@ -74,6 +77,9 @@ class KasusController extends Controller
         ]);
         $chart->labels($data->keys());
         $chart->dataset('Jumlah Kasus', 'line', $total_case)
+                ->color("#605ca8")
+                ->backgroundcolor("rgba(201, 76, 76, 0.0)");
+        $chart->dataset('Kasus Aktive', 'line', $active_case)
                 ->color("#17a2b8")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
         $chart->dataset('Pasien Sembuh ', 'line', $total_recovered)
