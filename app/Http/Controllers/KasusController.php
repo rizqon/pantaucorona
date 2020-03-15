@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Kasus;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Charts\LineChart;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class KasusController extends Controller
         // Pick Data
         $kasus = Kasus::latest()->first();
 
-        // $news = $this->news();
+        $news = $this->news();
 
         $chart = $this->lineChart();
 
@@ -26,13 +27,16 @@ class KasusController extends Controller
 
     protected function news()
     {
-        $collection = Cache::remember('news-api', 3600, function () {
-            $client = new Client();
-
+        $collection = Cache::remember('news-api', 10, function () {
+            $client = new Client([
+                'timeout' => 30.0
+            ]);
+    
             $response = $client->request('GET', config('corona.news_url'));
-
+    
             $data = json_decode($response->getBody()->getContents());
-
+    
+    
             return collect($data->articles);
         });
 
@@ -46,12 +50,13 @@ class KasusController extends Controller
         // chart
         $sub = Kasus::selectRaw('MAX(created_at)');
         $data = Kasus::whereRaw("created_at IN ({$sub->toSql()} GROUP BY Date(created_at) )")
-                        ->orderBy('created_at', 'asc')
+                        ->orderBy('created_at')
+                        ->whereDate('created_at', '>', Carbon::now()->subDays(30))
                         ->get()
                         ->groupBy(function($item){
                             return $item->created_at->format('Y-m-d');
                         });
-        
+
         $total_case = $data->values()->map(function($item, $key){
                             return $item[0]->total_case;
                         });
