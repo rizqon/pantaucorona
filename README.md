@@ -2,6 +2,8 @@
 
 pantaucorona.xyz adalah sebuah aplikasi untuk tracking virus korona yang ada di indonesia. aplikasi ini menggunakan Laravel 7.x
 
+![alt text](https://i.imgur.com/Odi2s9G.png)
+
 ## Installation
 
 gunakan [git](https://git-scm.com/) untuk mengunduh source dari repository ini 

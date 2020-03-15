@@ -19,7 +19,7 @@ class CoronaDataTest extends TestCase
      */
     public function it_can_scrape_and_extract_data()
     {
-        $url = 'https://www.worldometers.info/coronavirus/';
+        $url = config('corona.source_url');
         
         $client = new Client([
             // You can set any number of default request options.
