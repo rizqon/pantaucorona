@@ -84,7 +84,7 @@ class KasusController extends Controller
         $chart->dataset('Jumlah Kasus', 'line', $total_case)
                 ->color("#17a2b8")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
-        $chart->dataset('Kasus Aktive', 'line', $active_case)
+        $chart->dataset('Dalam Perawatan', 'line', $active_case)
                 ->color("#605ca8")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
         $chart->dataset('Pasien Sembuh ', 'line', $total_recovered)
@@ -109,7 +109,7 @@ class KasusController extends Controller
             ]
         ]);
         $donat->displayAxes(true, false);
-        $donat->labels(['Pasien Sembuh %', 'Pasien Kritis %', 'Pasien Meninggal %', 'Kasus Aktiv %']);
+        $donat->labels(['Pasien Sembuh %', 'Pasien Kritis %', 'Pasien Meninggal %', 'Dalam Perawatan %']);
         $donat->dataset('Kasus', 'pie', [
             $kasus->total_recovered / $kasus->total_case * 100,
             $kasus->total_critical / $kasus->total_case * 100,
