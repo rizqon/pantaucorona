@@ -115,13 +115,13 @@ class KasusController extends Controller
             '#28a745',
             '#ffc107',
             '#dc3545',
-            '#17a2b8'
+            '#605ca8'
         ])
         ->backgroundcolor([
             '#28a745',
             '#ffc107',
             '#dc3545',
-            '#17a2b8'
+            '#605ca8'
         ]);
 
         return $donat;
