@@ -64,12 +64,12 @@ class CaseSpreadNotification
 
             if( $oldcase->active_case < $newcase->active_case)
             {
-                $message .= "\nTotal kasus aktive *bertambah*, dari {$oldcase->active_case} menjadi {$newcase->active_case}. \n";
+                $message .= "\nTotal kasus aktif *bertambah*, dari {$oldcase->active_case} menjadi {$newcase->active_case}. \n";
             }elseif ($oldcase->active_case < $newcase->active_case) {
-                $message .= "\nTotal kasus aktive *berkurang*, dari {$oldcase->active_case} menjadi {$newcase->active_case}. \n";
+                $message .= "\nTotal kasus aktif *berkurang*, dari {$oldcase->active_case} menjadi {$newcase->active_case}. \n";
             }else
             {
-                $message .= "\nTotal kasus aktive *Tetap* {$newcase->active_case} kasus. \n";
+                $message .= "\nTotal kasus aktif *Tetap* {$newcase->active_case} kasus. \n";
             }
 
             $message .= "\n\nTetap waspada, dan jangan panik ya guys...";
