@@ -27,7 +27,7 @@ class KasusController extends Controller
 
     protected function news()
     {
-        $collection = Cache::remember('news-api', 10, function () {
+        $collection = Cache::remember('news-api', config('corona.cache_time'), function () {
             $client = new Client([
                 'timeout' => 30.0
             ]);
