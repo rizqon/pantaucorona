@@ -19,7 +19,7 @@
                         <img src="{{ $berita->urlToImage }}" alt="{{ $berita->title }}" class="img-size-50">
                     </div>
                     <div class="product-info">
-                        <a href="{{ $berita->url }}" class="product-title" rel="nofollow">
+                        <a href="{{ $berita->url }}" class="product-title" rel="nofollow" target="_blank">
                             {{ $berita->title }}
                         </a>
                         <span class="product-description">
