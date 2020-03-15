@@ -10,6 +10,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
   <title>Pantau Corona | Dashboard</title>
+  <meta name="description" content="Pantau Corona, adalah sebuah aplikasi untuk memantau perkembangan virus korona di Indonesia.">
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
