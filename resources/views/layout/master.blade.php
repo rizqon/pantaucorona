@@ -37,26 +37,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
       <div class="collapse navbar-collapse order-3" id="navbarCollapse">
         <!-- Left navbar links -->
-        <ul class="navbar-nav">
+        {{-- <ul class="navbar-nav">
           <li class="nav-item">
             <a href="{{ route('dashboard') }}" class="nav-link">Home</a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link">Contact</a>
           </li>
-        </ul>
+        </ul> --}}
 
-        <!-- SEARCH FORM -->
-        <form class="form-inline ml-0 ml-md-3">
-          <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-              <button class="btn btn-navbar" type="submit">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-          </div>
-        </form>
       </div>
 
       <!-- Right navbar links -->
