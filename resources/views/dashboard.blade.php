@@ -10,7 +10,6 @@
     
     <div class="row">
         @include('include.donut_chart_record')
-        @include('include.news_stream')
     </div>
 </div>
 @endsection
