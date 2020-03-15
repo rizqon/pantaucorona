@@ -99,7 +99,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       Semoga musibah ini cepat berlalu. Amin
     </div>
     <!-- Default to the left -->
-    <strong>Copyright &copy; <a href="#">Rizqon Sadida</a>.</strong> All rights reserved.
+    <strong>Notifikasi terbaru, bisa join channel telegram. <a href="https://t.me/s/pantaucorona" target="_blank">@pantaucorona</a>.</strong>
   </footer>
 </div>
 <!-- ./wrapper -->
