@@ -15,7 +15,7 @@ class KasusController extends Controller
         // Pick Data
         $kasus = Kasus::latest()->first();
 
-        // $news = $this->news();
+        $news = $this->news();
 
         $chart = $this->lineChart();
 
