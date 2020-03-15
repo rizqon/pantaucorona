@@ -22,7 +22,7 @@ class KasusController extends Controller
 
         $donat = $this->donatChart($kasus);
 
-        return view('dashboard', compact('kasus', 'chart', 'donat'));
+        return view('dashboard', compact('kasus', 'chart', 'donat', 'news'));
     }
 
     protected function news()
