@@ -46,11 +46,11 @@
         <!-- ./col -->
         <div class="col-lg-3 col-6">
             <!-- small card -->
-            <div class="small-box bg-gradient-warning">
+            <div class="small-box bg-gradient-purple">
                 <div class="inner">
-                    <h3>{{ $kasus->critical_case }}</h3>
+                    <h3>{{ $kasus->active_case }}</h3>
 
-                    <p>Total Kritis</p>
+                    <p>Dalam Perawatan</p>
                 </div>
                 <div class="icon">
                     <i class="fas fa-ambulance"></i>
