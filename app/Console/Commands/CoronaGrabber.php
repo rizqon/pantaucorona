@@ -73,6 +73,7 @@ class CoronaGrabber extends Command
 
     protected function getArray(string $html) : array
     {
+        define('MAX_FILE_SIZE', 1200000);
         $dom = HtmlDomParser::str_get_html($html);
 
         $data = [];
