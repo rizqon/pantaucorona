@@ -55,24 +55,10 @@ class KasusController extends Controller
                         ->get()
                         ->groupBy(function($item){
                             return $item->created_at->format('Y-m-d');
+                        })
+                        ->map(function($item){
+                            return $item[0];
                         });
-
-        $total_case = $data->values()->map(function($item, $key){
-                            return $item[0]->total_case;
-                        });
-        $active_case = $data->values()->map(function($item, $key){
-                            return $item[0]->active_case;
-                        });
-        $total_recovered = $data->values()->map(function($item, $key){
-                                return $item[0]->total_recovered;
-                            });
-        $critical_case = $data->values()->map(function($item, $key){
-            return $item[0]->critical_case;
-        });
-
-        $total_death = $data->values()->map(function($item, $key){
-            return $item[0]->total_death;
-        });
         
         $chart = new LineChart;
         $chart->options([
@@ -81,19 +67,22 @@ class KasusController extends Controller
             ]
         ]);
         $chart->labels($data->keys());
-        $chart->dataset('Jumlah Kasus', 'line', $total_case)
+        $chart->dataset('Jumlah Kasus', 'line', $data->values()->pluck('total_case'))
                 ->color("#17a2b8")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
-        $chart->dataset('Dalam Perawatan', 'line', $active_case)
+        $chart->dataset('Dalam Perawatan', 'line', $data->values()->pluck('active_case'))
                 ->color("#605ca8")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
-        $chart->dataset('Pasien Sembuh ', 'line', $total_recovered)
+        $chart->dataset('Kasus Baru', 'line', $data->values()->pluck('new_case'))
+                ->color("#007bff")
+                ->backgroundcolor("rgba(201, 76, 76, 0.0)");
+        $chart->dataset('Pasien Sembuh ', 'line', $data->values()->pluck('total_recovered'))
                 ->color("#28a745")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
-        $chart->dataset('Pasien Kritis ', 'line', $critical_case)
+        $chart->dataset('Pasien Kritis ', 'line', $data->values()->pluck('critical_case'))
                 ->color("#ffc107")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
-        $chart->dataset('Pasien Meninggal', 'line', $total_death)
+        $chart->dataset('Pasien Meninggal', 'line', $data->values()->pluck('total_death'))
                 ->color("#dc3545")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
 
