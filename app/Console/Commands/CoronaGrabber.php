@@ -45,7 +45,12 @@ class CoronaGrabber extends Command
     {
         $this->info('Picking info Corona');
         
-        $data = $this->getData();
+        try{
+            $data = $this->getData();
+        }catch(\Exception $e)
+        {
+            throw new \Exception('failed get data');
+        }
         
         $old_kasus = Kasus::latest()->first();
 
@@ -68,13 +73,19 @@ class CoronaGrabber extends Command
     {
         $html = $this->getHtml();
 
-        return $this->getArray($html);
+        $array = $this->getArray($html);
+
+        return $array;
     }
 
     protected function getArray(string $html) : array
     {
-        define('MAX_FILE_SIZE', 1200000);
-        $dom = HtmlDomParser::str_get_html($html);
+        try{
+            $dom = HtmlDomParser::str_get_html($html);
+        }catch(\Exception $e)
+        {
+            throw new Exception("Error Processing Request", 1);
+        }
 
         $data = [];
         foreach($dom->find('table.table-bordered tbody tr') as $row)
