@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use App\Events\CaseUpdated;
 use Illuminate\Console\Command;
 use KubAT\PhpSimple\HtmlDomParser;
+use Illuminate\Support\Facades\App;
 
 class CoronaGrabber extends Command
 {
@@ -58,7 +59,9 @@ class CoronaGrabber extends Command
         $this->line('Kasus Aktif: '. $kasus->active_case);
         $this->line('Kasus Kritis: '. $kasus->critical_case);
 
-        event(new CaseUpdated($old_kasus, $kasus));
+        if (!App::environment('local')) {
+            event(new CaseUpdated($old_kasus, $kasus));
+        }
     }
 
     protected function getData() : array
