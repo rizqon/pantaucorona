@@ -69,6 +69,11 @@ class CoronaGrabber extends Command
         }
     }
 
+    /**
+     * get data
+     *
+     * @return array
+     */
     protected function getData() : array
     {
         $html = $this->getHtml();
@@ -78,6 +83,12 @@ class CoronaGrabber extends Command
         return $array;
     }
 
+    /**
+     * parse data as array
+     *
+     * @param string $html
+     * @return array
+     */
     protected function getArray(string $html) : array
     {
         define('MAX_FILE_SIZE', 1200000);

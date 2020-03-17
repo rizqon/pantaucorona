@@ -1,9 +1,9 @@
 # pantaucorona.xyz
 
-pantaucorona.xyz adalah sebuah aplikasi untuk tracking virus korona yang ada di indonesia. aplikasi ini menggunakan Laravel 7.x
+pantaucorona.xyz adalah sebuah aplikasi untuk tracking virus korona yang ada di indonesia. aplikasi ini menggunakan Laravel 7.x. notifikasi update kasus via channel telegram [@pantaucorona](https://t.me/pantaucorona)
 
 ![alt text](https://i.imgur.com/Odi2s9G.png)
-
+  
 ## Installation
 
 gunakan [git](https://git-scm.com/) untuk mengunduh source dari repository ini 
@@ -24,10 +24,21 @@ jangan lupa buat migrasi databasenya ya.
 php artisan migrate
 ```
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+tambahkan cronjob
+```bash
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+````
 
-Please make sure to update tests as appropriate.
+## Test
+```bash
+phpunit
+```
+
+## Source
+- [worldometer.info](https://www.worldometers.info/coronavirus/)
+
+## Contributing
+Just make pull request and you are in.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
