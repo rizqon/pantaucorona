@@ -45,8 +45,17 @@
             <!-- small card -->
             <div class="small-box bg-gradient-purple">
                 <div class="inner">
-                    <h3>{{ $kasus->active_case }}</h3>
-
+                    <h3>{{ $kasus->active_case }}
+                    @php
+                    $yesterday_active_case = \App\Kasus::whereDate('created_at', \Carbon\Carbon::yesterday())->latest()->first()->active_case;
+                    $today_active_case = \App\Kasus::whereDate('created_at', \Carbon\Carbon::today())->latest()->first()->active_case;
+                    @endphp
+                    @if($yesterday_active_case < $today_active_case)
+                        <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $today_active_case - $yesterday_active_case }}</sup>
+                    @elseif($yesterday_active_case > $today_active_case)
+                        <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-down"></i> {{ $yesterday_active_case - $today_active_case }}</sup>
+                    @endif
+                    </h3>
                     <p>Dalam Perawatan</p>
                 </div>
                 <div class="icon">
