@@ -17,6 +17,7 @@ class Kasus extends Model
         'total_death',
         'new_death',
         'total_recovered',
+        'new_recovered',
         'active_case',
         'critical_case'
     ];

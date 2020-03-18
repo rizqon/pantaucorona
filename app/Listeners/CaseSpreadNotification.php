@@ -26,8 +26,8 @@ class CaseSpreadNotification
             $event->oldcase->total_death != $event->newcase->total_death ||
             $event->oldcase->new_death != $event->newcase->new_death ||
             $event->oldcase->total_recovered != $event->newcase->total_recovered ||
-            $event->oldcase->active_case != $event->newcase->active_case ||
-            $event->oldcase->critical_case != $event->newcase->critical_case
+            $event->oldcase->new_recovered != $event->newcase->new_recovered ||
+            $event->oldcase->active_case != $event->newcase->active_case
         )
         {
             $oldcase = $event->oldcase;
@@ -38,7 +38,7 @@ class CaseSpreadNotification
             {
                 if( $oldcase->total_case < $newcase->total_case)
                 {
-                    $message .= "Total Kasus *bertambah* {$newcase->new_case} orang, dari {$oldcase->total_case} menjadi {$newcase->total_case}. \n";
+                    $message .= "\nTotal Kasus *bertambah* {$newcase->new_case} orang, dari {$oldcase->total_case} menjadi {$newcase->total_case}. \n";
                 }
             }
 
@@ -46,9 +46,9 @@ class CaseSpreadNotification
             {
                 if( $oldcase->total_recovered < $newcase->total_recovered)
                 {
-                    $message .= "Pasien sembuh *bertambah* dari {$oldcase->total_recovered} menjadi {$newcase->total_recovered}. \n";
+                    $message .= "\nPasien sembuh *bertambah* {$newcase->new_recovered} orang, dari {$oldcase->total_recovered} menjadi {$newcase->total_recovered}. \n";
                 }else {
-                    $message .= "Pasien sembuh *berkurang* dari {$oldcase->total_recovered} menjadi {$newcase->total_recovered}. \n";
+                    $message .= "\nPasien sembuh *berkurang* dari {$oldcase->total_recovered} orang, menjadi {$newcase->total_recovered}. \n";
                 }
             }
 
@@ -56,21 +56,22 @@ class CaseSpreadNotification
             {
                 if( $oldcase->total_death < $newcase->total_death)
                 {
-                    $message .= "Pasien meninggal *bertambah* dari {$oldcase->total_death} menjadi {$newcase->total_death}. \n";
+                    $message .= "\nPasien meninggal *bertambah* {$newcase->new_death} orang, dari {$oldcase->total_death} menjadi {$newcase->total_death}. \n";
                 }else {
-                    $message .= "Pasien meninggal *berkurang* dari {$oldcase->total_death} menjadi {$newcase->total_death}. \n";
+                    $message .= "\nPasien meninggal *berkurang* dari {$oldcase->total_death} menjadi {$newcase->total_death}. \n";
                 }
             }
 
-            if( $oldcase->active_case < $newcase->active_case)
+            if($oldcase->active_case != $newcase->active_case)
             {
-                $message .= "\nTotal dirawat *bertambah*, dari {$oldcase->active_case} menjadi {$newcase->active_case}. \n";
-            }elseif ($oldcase->active_case < $newcase->active_case) {
-                $message .= "\nTotal dirawat *berkurang*, dari {$oldcase->active_case} menjadi {$newcase->active_case}. \n";
-            }else
-            {
-                $message .= "\nTotal dirawat *Tetap* {$newcase->active_case} kasus. \n";
+                if( $oldcase->active_case < $newcase->active_case)
+                {
+                    $message .= "\nTotal dirawat *bertambah*, dari {$oldcase->active_case} menjadi {$newcase->active_case}. \n";
+                }elseif ($newcase->active_case < $oldcase->active_case) {
+                    $message .= "\nTotal dirawat *berkurang*, dari {$oldcase->active_case} menjadi {$newcase->active_case}. \n";
+                }
             }
+            
 
             $message .= "\n\nTetap waspada, dan jangan panik ya guys...";
 

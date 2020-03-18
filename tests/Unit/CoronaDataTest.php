@@ -5,8 +5,12 @@ namespace Tests\Unit;
 use App\Kasus;
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use League\Csv\Reader;
+use League\Csv\Statement;
+use App\Imports\CoronaCsv;
 use Illuminate\Support\Facades\DB;
 use KubAT\PhpSimple\HtmlDomParser;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CoronaDataTest extends TestCase
@@ -54,7 +58,6 @@ class CoronaDataTest extends TestCase
     }
 
     /**
-     * @test
      * 
      * return void;
      */

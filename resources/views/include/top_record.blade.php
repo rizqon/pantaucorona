@@ -25,11 +25,8 @@
             <div class="small-box bg-gradient-success">
                 <div class="inner">
                     <h3>{{ $kasus->total_recovered }}
-                        @php
-                            $yesterday_recovered = \App\Kasus::whereDate('created_at', \Carbon\Carbon::yesterday())->latest()->first()->total_recovered;
-                        @endphp
-                        @if($selisih_recovered = $yesterday_recovered - $kasus->total_recovered > 0)
-                            <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $selisih_recovered }}</sup>
+                        @if($kasus->new_recovered > 0)
+                        <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $kasus->new_recovered }}</sup>
                         @endif
                     </h3>
 

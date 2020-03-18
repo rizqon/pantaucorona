@@ -46,7 +46,7 @@ class CoronaGrabber extends Command
         $this->info('Picking info Corona');
         
         try{
-            $data = $this->getData();
+            $data = $this->getDatav2();
         }catch(\Exception $e)
         {
             throw new \Exception('failed get data');
@@ -67,6 +67,31 @@ class CoronaGrabber extends Command
         if (!App::environment('local')) {
             event(new CaseUpdated($old_kasus, $kasus));
         }
+    }
+
+    protected function getDatav2()
+    {
+        $client = new Client([
+            'timeout' => 10.0
+        ]);
+
+        $response = $client->request('GET', 'https://kawalcovid19.harippe.id/api/summary');
+        $result = json_decode($response->getBody()->getContents());
+
+        $yesterday_case = Kasus::whereDate('created_at', Carbon::yesterday())->latest()->first();
+
+        $data = [
+            'total_case' => $result->confirmed->value,
+            'new_case' => $result->confirmed->value - $yesterday_case->total_case,
+            'total_death' => $result->deaths->value,
+            'new_death' => $result->deaths->value - $yesterday_case->total_death,
+            'total_recovered' => $result->recovered->value,
+            'new_recovered' => $result->recovered->value - $yesterday_case->total_recovered,
+            'active_case' => $result->activeCare->value,
+            'critical_case' => 0
+        ];
+
+        return $data;
     }
 
     /**

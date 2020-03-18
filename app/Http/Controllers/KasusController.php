@@ -103,9 +103,6 @@ class KasusController extends Controller
         $chart->dataset('Pasien Sembuh ', 'line', $data->values()->pluck('total_recovered'))
                 ->color("#28a745")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
-        $chart->dataset('Pasien Kritis ', 'line', $data->values()->pluck('critical_case'))
-                ->color("#ffc107")
-                ->backgroundcolor("rgba(201, 76, 76, 0.0)");
         $chart->dataset('Pasien Meninggal', 'line', $data->values()->pluck('total_death'))
                 ->color("#dc3545")
                 ->backgroundcolor("rgba(201, 76, 76, 0.0)");
@@ -131,22 +128,19 @@ class KasusController extends Controller
 
         // Render doughnout diagram
         $donat->displayAxes(true, false);
-        $donat->labels(['Pasien Sembuh %', 'Pasien Kritis %', 'Pasien Meninggal %', 'Dalam Perawatan %']);
+        $donat->labels(['Pasien Sembuh %', 'Pasien Meninggal %', 'Dalam Perawatan %']);
         $donat->dataset('Kasus', 'pie', [
             $kasus->total_recovered / $kasus->total_case * 100,
-            $kasus->total_critical / $kasus->total_case * 100,
             $kasus->total_death / $kasus->total_case * 100,
             $kasus->active_case / $kasus->total_case * 100,
         ])
         ->color([
             '#28a745',
-            '#ffc107',
             '#dc3545',
             '#605ca8'
         ])
         ->backgroundcolor([
             '#28a745',
-            '#ffc107',
             '#dc3545',
             '#605ca8'
         ]);
