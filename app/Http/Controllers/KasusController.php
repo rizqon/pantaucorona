@@ -6,7 +6,6 @@ use App\Kasus;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Charts\LineChart;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 class KasusController extends Controller

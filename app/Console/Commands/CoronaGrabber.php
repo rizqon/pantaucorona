@@ -121,7 +121,7 @@ class CoronaGrabber extends Command
             $dom = HtmlDomParser::str_get_html($html);
         }catch(\Exception $e)
         {
-            throw new Exception("Error Processing Request", 1);
+            throw new \Exception("Error Processing Request", 1);
         }
 
         $data = [];
