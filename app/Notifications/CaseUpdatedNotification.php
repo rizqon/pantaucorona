@@ -3,9 +3,9 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
+use NotificationChannels\Telegram\TelegramFile;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramMessage;
 
@@ -37,9 +37,27 @@ class CaseUpdatedNotification extends Notification
 
     public function toTelegram($notifiable)
     {
-        return TelegramMessage::create()
-            ->to('@pantaucorona')
+        $file = file_get_contents(base_path('keyword.txt'));
+        $keywords = explode("\n", $file);
+        $keyword = collect($keywords)->random();
+
+        $url = 'api.giphy.com/v1/gifs/search';
+
+        $response = Http::get($url, [
+            'api_key' => '08IBoyBS8RVEYgxmZDwUFRCHjiJV8xtW',
+            'q' => $keyword
+        ]);
+
+        $decode = json_decode($response->body());
+
+        $collect = collect($decode->data);
+
+        $data = $collect->random();
+
+        return TelegramFile::create()
+            ->to(config('services.telegram-bot-api.channel'))
             ->content("New Case Updated!\n".$this->message)
+            ->animation($data->images->original->url)
             ->button('More Info', 'https://pantaucorona.xyz');
     }
 }
