@@ -43,13 +43,13 @@
                     <h3>{{ $kasus->active_case }}
                     @php
                     $yesterday = \App\Kasus::whereDate('created_at', \Carbon\Carbon::yesterday())->latest()->first();
-                    $today = \App\Kasus::whereDate('created_at', \Carbon\Carbon::today())->latest()->first();
+                    $latest = \App\Kasus::latest()->first();
                     @endphp
                     @if($yesterday)
-                        @if($yesterday->active_case < $today->active_case)
-                            <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $today->active_case - $yesterday->active_case }}</sup>
-                        @elseif($yesterday->active_case > $today->active_case)
-                            <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-down"></i> {{ $yesterday->active_case - $today->active_case }}</sup>
+                        @if($yesterday->active_case < $latest->active_case)
+                            <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $latest->active_case - $yesterday->active_case }}</sup>
+                        @elseif($yesterday->active_case > $latest->active_case)
+                            <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-down"></i> {{ $yesterday->active_case - $latest->active_case }}</sup>
                         @endif
                     @endif
                     </h3>
