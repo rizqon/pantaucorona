@@ -4,11 +4,8 @@
             <div class="small-box bg-gradient-info">
                 <div class="inner">
                     <h3>{{ $kasus->total_case }}
-                        @if($kasus->new_case > 0)
                         <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $kasus->new_case }}</sup>
-                        @endif
                     </h3>
-
                     <p>Total Kasus</p>
                 </div>
                 <div class="icon">
@@ -25,9 +22,7 @@
             <div class="small-box bg-gradient-success">
                 <div class="inner">
                     <h3>{{ $kasus->total_recovered }}
-                        @if($kasus->new_recovered > 0)
                         <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $kasus->new_recovered }}</sup>
-                        @endif
                     </h3>
 
                     <p>Total Sembuh</p>
@@ -47,13 +42,15 @@
                 <div class="inner">
                     <h3>{{ $kasus->active_case }}
                     @php
-                    $yesterday_active_case = \App\Kasus::whereDate('created_at', \Carbon\Carbon::yesterday())->latest()->first()->active_case;
-                    $today_active_case = \App\Kasus::whereDate('created_at', \Carbon\Carbon::today())->latest()->first()->active_case;
+                    $yesterday = \App\Kasus::whereDate('created_at', \Carbon\Carbon::yesterday())->latest()->first();
+                    $today = \App\Kasus::whereDate('created_at', \Carbon\Carbon::today())->latest()->first();
                     @endphp
-                    @if($yesterday_active_case < $today_active_case)
-                        <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $today_active_case - $yesterday_active_case }}</sup>
-                    @elseif($yesterday_active_case > $today_active_case)
-                        <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-down"></i> {{ $yesterday_active_case - $today_active_case }}</sup>
+                    @if($yesterday)
+                        @if($yesterday->active_case < $today->active_case)
+                            <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $today->active_case - $yesterday->active_case }}</sup>
+                        @elseif($yesterday->active_case > $today->active_case)
+                            <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-down"></i> {{ $yesterday->active_case - $today->active_case }}</sup>
+                        @endif
                     @endif
                     </h3>
                     <p>Dalam Perawatan</p>
@@ -72,9 +69,7 @@
             <div class="small-box bg-gradient-danger">
                 <div class="inner">
                     <h3>{{ $kasus->total_death }}
-                        @if($kasus->new_death > 0)
                         <sup style="font-size: 15px; top: -15px"><i class="fas fa-arrow-up"></i> {{ $kasus->new_death }}</sup>
-                        @endif
                     </h3>
 
                     <p>Total Meninggal</p>
