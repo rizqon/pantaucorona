@@ -21,7 +21,7 @@ class CoronaDataTest extends TestCase
      * 
      * @return void
      */
-    public function it_can_scrape_and_extract_data()
+    public function test_it_can_scrape_and_extract_data()
     {
         $url = config('corona.source_url');
         
@@ -61,7 +61,7 @@ class CoronaDataTest extends TestCase
      * 
      * return void;
      */
-    public function it_can_load_data()
+    public function test_it_can_load_data()
     {
         $kasus = factory(Kasus::class, 100)->create();
 
