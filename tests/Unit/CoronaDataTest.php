@@ -21,7 +21,7 @@ class CoronaDataTest extends TestCase
         $file = file_get_contents(base_path('keyword.txt'));
         $keywords = explode("\n", $file);
         $keyword = collect($keywords)->random();
-        dd($keyword);
         
+        $this->assertNotEmpty($keyword);
     }
 }
