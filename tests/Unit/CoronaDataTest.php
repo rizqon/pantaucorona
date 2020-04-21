@@ -22,37 +22,8 @@ class CoronaDataTest extends TestCase
         $file = file_get_contents(base_path('keyword.txt'));
         $keywords = explode("\n", $file);
         $keyword = collect($keywords)->random();
-        dd($keyword);
-        $client = new Client([
-            // You can set any number of default request options.
-            'timeout'  => 10.0,
-        ]);
-
-        $response = $client->request('GET', $url);
-
-        $html = $response->getBody()->getContents();
-
-        $dom = HtmlDomParser::str_get_html($html);
-
-        $data = [
-            'country' => 'indonesia'
-        ];
-        foreach($dom->find('table.table-bordered tbody tr') as $row)
-        {
-            if( strpos(strtolower($row->find('td', 0)->plaintext), 'indonesia'))
-            {
-                // dd($row->find('td', 1)->plaintext);
-                $data['total_case'] = (int) $row->find('td', 1)->plaintext;
-                $data['new_case'] = (int) $row->find('td', 2)->plaintext;
-                $data['total_death'] = (int) $row->find('td', 3)->plaintext;
-                $data['new_death'] = (int) $row->find('td', 4)->plaintext;
-                $data['total_recovered'] = (int) $row->find('td', 5)->plaintext;
-                $data['active_case'] = (int) $row->find('td', 6)->plaintext;
-                $data['critical_case'] = (int) $row->find('td', 7)->plaintext;
-            }
-        }
-
-        $this->assertTrue(true);
+        
+        $this->assertNotEmpty($keyword);
     }
 
     /**
