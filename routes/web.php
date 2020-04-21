@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'KasusController@index')->name('dashboard');
+Route::get('/', 'KasusController@index')->name('web.dashboard');

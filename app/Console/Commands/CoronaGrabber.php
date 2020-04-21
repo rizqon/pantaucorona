@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use App\Events\CaseUpdated;
 use Illuminate\Console\Command;
 use KubAT\PhpSimple\HtmlDomParser;
+use Illuminate\Support\Facades\App;
 
 class CoronaGrabber extends Command
 {
@@ -44,7 +45,12 @@ class CoronaGrabber extends Command
     {
         $this->info('Picking info Corona');
         
-        $data = $this->getData();
+        try{
+            $data = $this->getDatav2();
+        }catch(\Exception $e)
+        {
+            throw new \Exception('failed get data');
+        }
         
         $old_kasus = Kasus::latest()->first();
 
@@ -58,19 +64,65 @@ class CoronaGrabber extends Command
         $this->line('Kasus Aktif: '. $kasus->active_case);
         $this->line('Kasus Kritis: '. $kasus->critical_case);
 
-        event(new CaseUpdated($old_kasus, $kasus));
+        if (!App::environment('local')) {
+            event(new CaseUpdated($old_kasus, $kasus));
+        }
     }
 
+    protected function getDatav2()
+    {
+        $client = new Client([
+            'timeout' => 10.0
+        ]);
+
+        $response = $client->request('GET', 'https://kawalcovid19.harippe.id/api/summary');
+        $result = json_decode($response->getBody()->getContents());
+
+        $yesterday_case = Kasus::whereDate('created_at', Carbon::yesterday())->latest()->first();
+
+        $data = [
+            'total_case' => $result->confirmed->value,
+            'new_case' => $result->confirmed->value - $yesterday_case->total_case,
+            'total_death' => $result->deaths->value,
+            'new_death' => $result->deaths->value - $yesterday_case->total_death,
+            'total_recovered' => $result->recovered->value,
+            'new_recovered' => $result->recovered->value - $yesterday_case->total_recovered,
+            'active_case' => $result->activeCare->value,
+            'critical_case' => 0
+        ];
+
+        return $data;
+    }
+
+    /**
+     * get data
+     *
+     * @return array
+     */
     protected function getData() : array
     {
         $html = $this->getHtml();
 
-        return $this->getArray($html);
+        $array = $this->getArray($html);
+
+        return $array;
     }
 
+    /**
+     * parse data as array
+     *
+     * @param string $html
+     * @return array
+     */
     protected function getArray(string $html) : array
     {
-        $dom = HtmlDomParser::str_get_html($html);
+        define('MAX_FILE_SIZE', 1200000);
+        try{
+            $dom = HtmlDomParser::str_get_html($html);
+        }catch(\Exception $e)
+        {
+            throw new \Exception("Error Processing Request", 1);
+        }
 
         $data = [];
         foreach($dom->find('table.table-bordered tbody tr') as $row)

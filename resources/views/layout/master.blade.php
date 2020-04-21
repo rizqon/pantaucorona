@@ -25,7 +25,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
-      <a href="{{ route('dashboard') }}" class="navbar-brand">
+      <a href="{{ route('web.dashboard') }}" class="navbar-brand">
         <img src="{{ asset('img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
              style="opacity: .8">
         <span class="brand-text font-weight-light">PantauCorona</span>
@@ -37,14 +37,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
       <div class="collapse navbar-collapse order-3" id="navbarCollapse">
         <!-- Left navbar links -->
-        {{-- <ul class="navbar-nav">
+        <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="{{ route('dashboard') }}" class="nav-link">Home</a>
+            <a href="{{ route('api.daily') }}" target="_blank" class="nav-link">API Daily</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">Contact</a>
+            <a href="{{ route('api.stream') }}" target="_blank" class="nav-link">API Stream</a>
           </li>
-        </ul> --}}
+        </ul>
 
       </div>
 

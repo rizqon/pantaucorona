@@ -14,6 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/daily', 'Api\KasusController@daily')->name('api.daily');
+
+Route::get('/stream', 'Api\KasusController@stream')->name('api.stream');
