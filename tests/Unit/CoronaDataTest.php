@@ -10,21 +10,19 @@ use League\Csv\Statement;
 use App\Imports\CoronaCsv;
 use Illuminate\Support\Facades\DB;
 use KubAT\PhpSimple\HtmlDomParser;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CoronaDataTest extends TestCase
 {
-    use RefreshDatabase;
-    /**
-     * A basic unit test example.
-     * 
-     * @return void
-     */
-    public function test_it_can_scrape_and_extract_data()
+
+    public function test_load_keyword()
     {
-        $url = config('corona.source_url');
-        
+        $file = file_get_contents(base_path('keyword.txt'));
+        $keywords = explode("\n", $file);
+        $keyword = collect($keywords)->random();
+        dd($keyword);
         $client = new Client([
             // You can set any number of default request options.
             'timeout'  => 10.0,

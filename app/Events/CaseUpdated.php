@@ -15,17 +15,14 @@ class CaseUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $oldcase;
-
-    public $newcase;
+    public $kasus;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Kasus $oldcase, Kasus $newcase)
+    public function __construct(Kasus $kasus)
     {
-        $this->oldcase = $oldcase;
-        $this->newcase = $newcase;
+        $this->kasus = $kasus;
     }
 }

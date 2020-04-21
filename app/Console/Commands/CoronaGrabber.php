@@ -44,116 +44,82 @@ class CoronaGrabber extends Command
     public function handle()
     {
         $this->info('Picking info Corona');
+        // get latest data
+        $data = Kasus::latest()->first();
         
-        try{
-            $data = $this->getDatav2();
-        }catch(\Exception $e)
+        // get data
+        $result = $this->getDataV3();
+
+        // compare data
+        $is_updated = !$this->compareData($data, $result);
+
+        // if updated data
+        if($is_updated)
         {
-            throw new \Exception('failed get data');
-        }
-        
-        $old_kasus = Kasus::latest()->first();
+            // parsing data
+            $parsedData = $this->parseData($data, $result);
 
-        $kasus = Kasus::create($data);
-        $this->info('Info virus corona');
-        $this->line('Total Kasus: '. $kasus->total_case);
-        $this->line('Kasus Baru: '. $kasus->new_case);
-        $this->line('Total Kematian: '. $kasus->total_death);
-        $this->line('Kematian Baru: '. $kasus->new_death);
-        $this->line('Total Sembuh: '. $kasus->total_recovered);
-        $this->line('Kasus Aktif: '. $kasus->active_case);
-        $this->line('Kasus Kritis: '. $kasus->critical_case);
+            $kasus = Kasus::create($parsedData);
+            $this->info('Info virus corona');
+            $this->line('Total Kasus: '. $kasus->total_case);
+            $this->line('Kasus Baru: '. $kasus->new_case);
+            $this->line('Total Kematian: '. $kasus->total_death);
+            $this->line('Kematian Baru: '. $kasus->new_death);
+            $this->line('Total Sembuh: '. $kasus->total_recovered);
+            $this->line('Kasus Aktif: '. $kasus->active_case);
+            $this->line('Kasus Kritis: '. $kasus->critical_case);
 
-        if (!App::environment('local')) {
-            event(new CaseUpdated($old_kasus, $kasus));
+            event(new CaseUpdated($kasus));
+        }else{
+            $this->info('No update data');
         }
     }
 
-    protected function getDatav2()
+    protected function parseData($data, array $result)
+    {
+        $parsed = [
+            'total_case' => $result['confirmed'],
+            'new_case' => $result['confirmed'] - $data->total_case,
+            'total_death' => $result['deaths'],
+            'new_death' => $result['deaths'] - $data->total_death,
+            'total_recovered' => $result['recovered'],
+            'new_recovered' => $result['recovered'] - $data->total_recovered,
+            'active_case' => $result['active'],
+            'critical_case' => 0
+        ];
+
+        return $parsed;
+    }
+
+    protected function compareData($data, array $result)
+    {
+        $val_1 = [
+            'confirmed' => $data->total_case,
+            'deaths' => $data->total_death,
+            'recovered' => $data->total_recovered,
+            'activeCare' => $data->active_case
+        ];
+
+        $val_2 = [
+            'confirmed' => $result['confirmed'],
+            'deaths' => $result['deaths'],
+            'recovered' => $result['recovered'],
+            'activeCare' => $result['active']
+        ];
+
+        return $val_1 === $val_2;
+    }
+
+    protected function getDataV3()
     {
         $client = new Client([
             'timeout' => 10.0
         ]);
 
-        $response = $client->request('GET', 'https://kawalcovid19.harippe.id/api/summary');
-        $result = json_decode($response->getBody()->getContents());
-
-        $yesterday_case = Kasus::whereDate('created_at', Carbon::yesterday())->latest()->first();
-
-        $data = [
-            'total_case' => $result->confirmed->value,
-            'new_case' => $result->confirmed->value - $yesterday_case->total_case,
-            'total_death' => $result->deaths->value,
-            'new_death' => $result->deaths->value - $yesterday_case->total_death,
-            'total_recovered' => $result->recovered->value,
-            'new_recovered' => $result->recovered->value - $yesterday_case->total_recovered,
-            'active_case' => $result->activeCare->value,
-            'critical_case' => 0
-        ];
-
-        return $data;
-    }
-
-    /**
-     * get data
-     *
-     * @return array
-     */
-    protected function getData() : array
-    {
-        $html = $this->getHtml();
-
-        $array = $this->getArray($html);
-
-        return $array;
-    }
-
-    /**
-     * parse data as array
-     *
-     * @param string $html
-     * @return array
-     */
-    protected function getArray(string $html) : array
-    {
-        define('MAX_FILE_SIZE', 1200000);
-        try{
-            $dom = HtmlDomParser::str_get_html($html);
-        }catch(\Exception $e)
-        {
-            throw new \Exception("Error Processing Request", 1);
-        }
-
-        $data = [];
-        foreach($dom->find('table.table-bordered tbody tr') as $row)
-        {
-            if( strpos(strtolower($row->find('td', 0)->plaintext), 'indonesia'))
-            {
-                // dd($row->find('td', 1)->plaintext);
-                $data['total_case'] = (int) $row->find('td', 1)->plaintext;
-                $data['new_case'] = (int) $row->find('td', 2)->plaintext;
-                $data['total_death'] = (int) $row->find('td', 3)->plaintext;
-                $data['new_death'] = (int) $row->find('td', 4)->plaintext;
-                $data['total_recovered'] = (int) $row->find('td', 5)->plaintext;
-                $data['active_case'] = (int) $row->find('td', 6)->plaintext;
-                $data['critical_case'] = (int) $row->find('td', 7)->plaintext;
-            }
-        }
-
-        return $data;
-    }
-
-    protected function getHtml() : string
-    {
-        $url = config('corona.source_url');
+        $response = $client->request('GET', 'https://covid19.mathdro.id/api/countries/Indonesia/confirmed');
         
-        $client = new Client([
-            // You can set any number of default request options.
-            'timeout'  => 30.0,
-        ]);
+        $result = json_decode($response->getBody()->getContents(), true);
 
-        $response = $client->request('GET', $url);
-
-        return $response->getBody()->getContents();
+        return $result[0];
     }
 }
