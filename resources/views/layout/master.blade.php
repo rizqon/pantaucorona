@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <meta name="description" content="Pantau Corona, adalah sebuah aplikasi untuk memantau perkembangan virus korona di Indonesia.">
 
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
   <!-- Google Font: Source Sans Pro -->
@@ -26,8 +26,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
     <div class="container">
       <a href="{{ route('web.dashboard') }}" class="navbar-brand">
-        <img src="{{ asset('img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8">
+        <i class="fas fa-shield-virus"></i>
         <span class="brand-text font-weight-light">PantauCorona</span>
       </a>
       

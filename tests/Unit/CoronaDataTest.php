@@ -16,6 +16,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CoronaDataTest extends TestCase
 {
+
     public function test_load_keyword()
     {
         $file = file_get_contents(base_path('keyword.txt'));
@@ -23,5 +24,22 @@ class CoronaDataTest extends TestCase
         $keyword = collect($keywords)->random();
         
         $this->assertNotEmpty($keyword);
+    }
+
+    /**
+     * 
+     * return void;
+     */
+    public function test_it_can_load_data()
+    {
+        $kasus = factory(Kasus::class, 100)->create();
+
+        $sub = Kasus::selectRaw('MAX(created_at)');
+
+        $data = Kasus::whereRaw("created_at IN ({$sub->toSql()} GROUP BY Date(created_at) )")->orderBy('created_at', 'desc');
+
+        dd($data->get()->groupBy(function($item){
+            return $item->created_at->format('Y-m-d');
+        }));
     }
 }
