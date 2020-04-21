@@ -78,13 +78,13 @@ class CoronaGrabber extends Command
     protected function parseData($data, array $result)
     {
         $parsed = [
-            'total_case' => $result['confirmed']['value'],
-            'new_case' => $result['confirmed']['value'] - $data->total_case,
-            'total_death' => $result['deaths']['value'],
-            'new_death' => $result['deaths']['value'] - $data->total_death,
-            'total_recovered' => $result['recovered']['value'],
-            'new_recovered' => $result['recovered']['value'] - $data->total_recovered,
-            'active_case' => $result['activeCare']['value'],
+            'total_case' => $result['confirmed'],
+            'new_case' => $result['confirmed'] - $data->total_case,
+            'total_death' => $result['deaths'],
+            'new_death' => $result['deaths'] - $data->total_death,
+            'total_recovered' => $result['recovered'],
+            'new_recovered' => $result['recovered'] - $data->total_recovered,
+            'active_case' => $result['active'],
             'critical_case' => 0
         ];
 
@@ -101,10 +101,10 @@ class CoronaGrabber extends Command
         ];
 
         $val_2 = [
-            'confirmed' => $result['confirmed']['value'],
-            'deaths' => $result['deaths']['value'],
-            'recovered' => $result['recovered']['value'],
-            'activeCare' => $result['activeCare']['value']
+            'confirmed' => $result['confirmed'],
+            'deaths' => $result['deaths'],
+            'recovered' => $result['recovered'],
+            'activeCare' => $result['active']
         ];
 
         return $val_1 === $val_2;
@@ -116,10 +116,10 @@ class CoronaGrabber extends Command
             'timeout' => 10.0
         ]);
 
-        $response = $client->request('GET', 'https://kawalcovid19.harippe.id/api/summary');
+        $response = $client->request('GET', 'https://covid19.mathdro.id/api/countries/Indonesia/confirmed');
         
         $result = json_decode($response->getBody()->getContents(), true);
 
-        return $result;
+        return $result[0];
     }
 }
