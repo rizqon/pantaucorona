@@ -3,28 +3,29 @@
 namespace Tests\Unit;
 
 use App\Services\GlobalUpdate as ServicesGlobalUpdate;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 class GlobalUpdateTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * A basic unit test example.
      *
+     * @test
+     * 
      * @return void
      */
     /** @test */
-    public function test_availability_endpoint_global_api()
+    public function availability_endpoint_global_api()
     {
-        // $global = new ServicesGlobalUpdate();
-        $url = config('corona.global_api_url');
-        // $url = config('corona.source_url');
-        $get = Http::get($url);
-        if ($get->ok()) {
-            $this->assertTrue(true);
-        } else {
-            $this->assertTrue(false);
-        }
+        $url = 'https://covid19.mathdro.id/api/countries/Indonesia/confirmed';
+
+        $result = Http::get($url);
+
+        $this->assertJson($result);
     }
 
     public function test_something()

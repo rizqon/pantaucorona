@@ -14,7 +14,7 @@ class AddNewRecoveredColumnToKasus extends Migration
     public function up()
     {
         Schema::table('kasus', function (Blueprint $table) {
-            $table->integer('new_recovered')->after('total_recovered');
+            $table->integer('new_recovered')->nullable()->after('total_recovered');
         });
     }
 
