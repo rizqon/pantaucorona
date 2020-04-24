@@ -1,16 +1,13 @@
-@extends('layout.master')
+@extends('layouts.app')
 
-
-@section('last_update', $kasus->created_at->format('j F Y - H:i'))
 
 @section('content')
-<div class="container">
-    @include('include.top_record')
-    @include('include.bar_chart_record')
-    
-    <div class="row">
-        @include('include.donut_chart_record')
-        @include('include.news_stream')
+<section class="section">
+    <div class="section-body">
+    @livewire('counter')
+    @livewire('linechart')
+    @livewire('countrymap')
+    @livewire('bar-chart')
     </div>
-</div>
+</section>
 @endsection
