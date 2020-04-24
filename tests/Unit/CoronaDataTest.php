@@ -2,9 +2,11 @@
 
 namespace Tests\Unit;
 
+use App\Http\Resources\ProvinceCollection;
 use App\Kasus;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class CoronaDataTest extends TestCase
 {
@@ -37,5 +39,17 @@ class CoronaDataTest extends TestCase
         $data = Kasus::whereRaw("created_at IN ({$sub->toSql()} GROUP BY Date(created_at) )")->orderBy('created_at', 'desc');
 
         $this->assertNotEmpty($data);
+    }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_can_load_data_province()
+    {
+        $response = Http::get('https://api.kawalcorona.com/indonesia/provinsi');
+
+        $this->assertNotEmpty($response);
     }
 }

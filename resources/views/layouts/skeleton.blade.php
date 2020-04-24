@@ -7,9 +7,10 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="{{ mix('css/app.css') }}">
   @stack('stylesheet')
+  @livewireStyles
 </head>
 
-<body>
+<body class="layout-3">
 <div id="app">
   @yield('app')
 </div>
@@ -17,5 +18,6 @@
 <script src="{{ mix('js/vendor.js') }}"></script>
 <script src="{{ mix('js/app.js') }}"></script>
 @stack('javascript')
+@livewireScripts
 </body>
 </html>

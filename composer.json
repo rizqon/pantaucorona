@@ -16,7 +16,8 @@
         "kub-at/php-simple-html-dom-parser": "^1.9",
         "laravel-notification-channels/telegram": "^0.2.0",
         "laravel/framework": "^7.0",
-        "laravel/tinker": "^2.0"
+        "laravel/tinker": "^2.0",
+        "livewire/livewire": "^1.0"
     },
     "require-dev": {
         "facade/ignition": "^2.0",
