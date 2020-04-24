@@ -12,3 +12,9 @@ npm-debug.log
 yarn-error.log
 
 .DS_Store
+
+public/assets/
+public/css/
+public/fonts
+public/js
+public/mix-manifest.json
