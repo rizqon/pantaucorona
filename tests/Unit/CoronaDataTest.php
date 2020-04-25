@@ -63,6 +63,7 @@ class CoronaDataTest extends TestCase
         $response = Http::get('https://api.kawalcovid19.id/v1/api/case/summary');
 
         $decode = json_decode($response->body(), true);
-        dd($decode);
+
+        $this->assertNotEmpty($decode);
     }
 }
