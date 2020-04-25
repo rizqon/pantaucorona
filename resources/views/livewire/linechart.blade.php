@@ -97,6 +97,10 @@
         },
         gridLines: {
           display: false
+        },
+        type: 'time',
+        time: {
+            tooltipFormat: 'll'
         }
       }]
     },
