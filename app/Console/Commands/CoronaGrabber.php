@@ -3,12 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Kasus;
-use Carbon\Carbon;
-use GuzzleHttp\Client;
 use App\Events\CaseUpdated;
 use Illuminate\Console\Command;
-use KubAT\PhpSimple\HtmlDomParser;
-use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Http;
 
 class CoronaGrabber extends Command
 {
@@ -80,11 +77,11 @@ class CoronaGrabber extends Command
         $parsed = [
             'total_case' => $result['confirmed'],
             'new_case' => $result['confirmed'] - $data->total_case,
-            'total_death' => $result['deaths'],
-            'new_death' => $result['deaths'] - $data->total_death,
+            'total_death' => $result['deceased'],
+            'new_death' => $result['deceased'] - $data->total_death,
             'total_recovered' => $result['recovered'],
             'new_recovered' => $result['recovered'] - $data->total_recovered,
-            'active_case' => $result['active'],
+            'active_case' => $result['activeCare'],
             'critical_case' => 0
         ];
 
@@ -102,9 +99,9 @@ class CoronaGrabber extends Command
 
         $val_2 = [
             'confirmed' => $result['confirmed'],
-            'deaths' => $result['deaths'],
+            'deaths' => $result['deceased'],
             'recovered' => $result['recovered'],
-            'activeCare' => $result['active']
+            'activeCare' => $result['activeCare']
         ];
 
         return $val_1 === $val_2;
@@ -112,14 +109,10 @@ class CoronaGrabber extends Command
 
     protected function getDataV3()
     {
-        $client = new Client([
-            'timeout' => 10.0
-        ]);
+        $response = Http::get('https://api.kawalcovid19.id/v1/api/case/summary');
 
-        $response = $client->request('GET', 'https://covid19.mathdro.id/api/countries/Indonesia/confirmed');
-        
-        $result = json_decode($response->getBody()->getContents(), true);
+        $result = json_decode($response->body(), true);
 
-        return $result[0];
+        return $result;
     }
 }

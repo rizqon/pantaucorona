@@ -52,4 +52,17 @@ class CoronaDataTest extends TestCase
 
         $this->assertNotEmpty($response);
     }
+
+    /**
+     * @test
+     *
+     * @return void
+     */
+    public function it_can_load_data_nasional()
+    {
+        $response = Http::get('https://api.kawalcovid19.id/v1/api/case/summary');
+
+        $decode = json_decode($response->body(), true);
+        dd($decode);
+    }
 }
