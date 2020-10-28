@@ -28,7 +28,7 @@ class CaseSpreadNotification
         $message .= "\nTotal dirawat menjadi {$event->kasus->total_case} orang.\n";
 
         $message .= "\n\nTetap waspada, dan jangan panik ya guys...";
-
+        
         Notification::route(TelegramChannel::class, config('services.telegram-bot-api.channel'))
             ->notify(new CaseUpdatedNotification($message));
     }
