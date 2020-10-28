@@ -44,7 +44,7 @@ class CaseUpdatedNotification extends Notification
         $url = 'api.giphy.com/v1/gifs/search';
 
         $response = Http::get($url, [
-            'api_key' => '08IBoyBS8RVEYgxmZDwUFRCHjiJV8xtW',
+            'api_key' => config('services.giphy.key'),
             'q' => $keyword
         ]);
 

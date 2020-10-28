@@ -13,8 +13,8 @@ class KasusController extends Controller
 {
     public function daily()
     {
+        // Get latest and daily cases
         $kasus = Kasus::latest()->first();
-        
         return new KasusResource($kasus);
     }
 

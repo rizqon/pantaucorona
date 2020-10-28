@@ -33,5 +33,8 @@ return [
         'token' => env('TELEGRAM_BOT_TOKEN'),
         'channel' => env('TELEGRAM_CHANNEL')
     ],
+    'giphy' => [
+        'key'   => env('GIPHY_KEY')
+    ],
 
 ];
