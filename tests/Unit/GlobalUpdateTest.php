@@ -19,12 +19,12 @@ class GlobalUpdateTest extends TestCase
      * @return void
      */
     /** @test */
-    public function availability_endpoint_global_api()
-    {
-        $url = 'https://covid19.mathdro.id/api/countries/Indonesia/confirmed';
-        $result = Http::get($url);
-        $this->assertJson($result);
-    }
+    // public function availability_endpoint_global_api()
+    // {
+    //     $url = 'https://covid19.mathdro.id/api/countries/Indonesia/confirmed';
+    //     $result = Http::get($url);
+    //     $this->assertJson($result);
+    // }
 
     public function test_something()
     {
